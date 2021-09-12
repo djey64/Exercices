@@ -20,6 +20,10 @@ public class LonguestEqualSequence {
 //	0<= Sk[i] <= 480
 //	0<= Sn[i] <= 480
 //	0<= Sk[i]+Sn[i] <= 480
+	
+	
+	
+	
 //	0 <= length <=10000000;
 	
 	int question2(int[] a, int[] b) {
