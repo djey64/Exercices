@@ -5,7 +5,7 @@ package com.leetcode;
  * 
  */
 
-public class AddTwoNumbers {
+public class E2AddTwoNumbers {
 
 	public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 
