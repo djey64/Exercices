@@ -14,6 +14,15 @@ import java.util.HashSet;
  */
 public class E3LonguestSubstringWithoutRepeatingCharacters {
 
+	/**
+	 * Here I'm using sliding window to iterate over the input string
+	 * using an hashset to store encountered characters,
+	 * when found a duplicate char, we pop from the start index until we removed duplicate char.
+	 * continue this way until the end of string.
+	 * 
+	 * @param s
+	 * @return
+	 */
     public int lengthOfLongestSubstring(String s) {
     	HashSet<String> subString = new HashSet<>();
     	int maxLength = 0;
