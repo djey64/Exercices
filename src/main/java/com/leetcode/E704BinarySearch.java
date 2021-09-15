@@ -11,20 +11,30 @@ package com.leetcode;
  *
  */
 public class E704BinarySearch {
-    public int search(int[] nums, int target) {
-        boolean found = false;
+    public static int search(int[] nums, int target) {
+    	// optimisation: avoid looking for element that is out of bounds
+    	if(nums.length == 0 || nums[0] > target || nums[nums.length -1] < target) return -1;
+    	
         int start = 0; 
-        int end = nums.length;
-        int pivot = end - start / 2;
-        while(!found) {
-        	if(nums[pivot] > target) {
-        		// TODO
-        	} else if(nums[pivot] < target) {
-        		// TODO
-        	} else {
-        		// TODO
-        	}
+        int end = nums.length - 1;
+        int pivot = (end + start) / 2;
+        while(start <= end) {
+        	if (nums[pivot] == target) return pivot;
+        	if(nums[pivot] > target) 
+        		end = pivot - 1;
+        	else 
+        		start = pivot + 1;
+        	
+        	pivot = (end + start) / 2;
         }
-        return pivot;
+        return -1;
     }
+    
+	public static void main(String[] args) {
+		
+		int[] nums = new int[] {-1,0,3,5,9,12};
+		
+		int search = search(nums, 12);
+		System.out.println(search);
+	}    
 }
