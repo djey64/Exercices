@@ -43,58 +43,48 @@ public class E4MergeOfTwoSortedArrays {
 	 */
 	public static double findMedianSortedArrays(int[] n1, int[] n2) {
 		// Always take smaller array as nums1
-		int[] nums1 = n1.length <= n2.length ? n1 : n2;
-		int[] nums2 = n1.length > n2.length ? n1 : n2;
+		int[] A = n1.length <= n2.length ? n1 : n2;
+		int[] B = n1.length > n2.length ? n1 : n2;
 		
-		int total = nums1.length + nums2.length;
+		int total = A.length + B.length;
 		int half = total / 2;
 		
-		if(nums1.length == 0) 
-			return getMedian(nums2);
-		else if(nums2.length == 0)
-			return getMedian(nums1);
+		if(A.length == 0) 
+			return getMedian(B);
+		else if(B.length == 0)
+			return getMedian(A);
 		
 		// Left and right pointers (binary search)
 		int l = 0;
-		int r = nums1.length - 1;
+		int r = A.length - 1;
 		
-		while(l <= r) {
-			int m = (l + r) / 2;
+		while(true) {
+			int ma = (l + r) / 2;
 			// get complement index of nums2 from current index of num1
-			int m2 = half - (m + 1) - 1;
-			if((m2 == nums2.length - 1 || nums1[m] <= nums2[m2 + 1]) && (m == nums1.length -1 || nums2[m2] <= nums1[m + 1])) {
+			int mb = half - ma - 2;
+			
+			int aLeft = ma >= 0 ? A[ma] : Integer.MIN_VALUE;
+			int aRight = (ma + 1) < A.length ? A[ma + 1] : Integer.MAX_VALUE;
+			int bLeft = mb >= 0 ? B[mb] : Integer.MIN_VALUE;
+			int bRight = (mb + 1) < B.length ? B[mb + 1] : Integer.MAX_VALUE;
+			
+			
+			if(aLeft <= bRight && bLeft <= aRight) {
 				// We've found the left partition of the merged array
-				
-				int minOfNextElements = Math.min(getNextValueOrDefault(nums1, m, Integer.MAX_VALUE), getNextValueOrDefault(nums2, m2, Integer.MAX_VALUE));
 				if(total % 2 == 0) { 
 					// Even case
-					return (Math.max(nums1[m], nums2[m2]) + minOfNextElements) / 2d;
+					return (Math.max(aLeft, bLeft) + Math.min(aRight, bRight)) / 2d;
 				} else { 
 					// Odd case
-					return minOfNextElements;
+					return Math.min(aRight, bRight);
 				}
-			} else if (nums2[m2 + 1] <= nums1[m]){
-				r = m - 1;
+			} else if (aLeft > bRight){
+				r = ma - 1;
 			} else {
-				l = m + 1;
+				l = ma + 1;
 			}
 		}
-		
-		// case when 
-		return total % 2 == 0 
-				? (getElementAt(half - 1, nums1, nums2) + getElementAt(half, nums1, nums2)) / 2 
-				: getElementAt(half - 1, nums1, nums2);
 	}	
-	
-	// get element at index simulate arr1 and arr2 are merged
-	private static double getElementAt(int index, int[] arr1, int[] arr2) {
-		return index < arr1.length ? arr1[index] : arr2[index - arr1.length];
-	}
-	
-	// Get next element of array or else defaultValue
-	private static int getNextValueOrDefault(int[] arr, int index, int defaultValue) {
-		return index < arr.length - 1 ? arr[index + 1] : Integer.MAX_VALUE;
-	}
 	
 	private static double getMedian(int[] arr) {
 		int middle = arr.length / 2;
@@ -105,8 +95,8 @@ public class E4MergeOfTwoSortedArrays {
 	}
 
 	public static void main(String[] args) {
-		int[] nums1 = new int[] { 1, 2, 3 };
-		int[] nums2 = new int[] { 4, 5, 6 };
+		int[] nums1 = new int[] { 1, 3 };
+		int[] nums2 = new int[] { 2 };
 		
 		System.out.println(findMedianSortedArrays(nums1, nums2));
 		System.out.println(findMedianSortedArrays2(nums1, nums2));
