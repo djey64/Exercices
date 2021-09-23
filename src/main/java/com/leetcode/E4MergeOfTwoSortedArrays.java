@@ -59,7 +59,8 @@ public class E4MergeOfTwoSortedArrays {
 		int r = A.length - 1;
 		
 		while(true) {
-			int ma = (l + r) / 2;
+			// Binary search mid point computation (Warning here !)
+			int ma = (int) Math.floor(l + (r - l) / 2.0);
 			// get complement index of nums2 from current index of num1
 			int mb = half - ma - 2;
 			
@@ -87,16 +88,16 @@ public class E4MergeOfTwoSortedArrays {
 	}	
 	
 	private static double getMedian(int[] arr) {
-		int middle = arr.length / 2;
+		int middle = (arr.length - 1) / 2;
 		if(arr.length % 2 == 0) 
-			return (arr[middle] + arr[middle + 1]) / 2;
+			return arr[middle] + (arr[middle + 1] - arr[middle]) / 2.0;
 		else 
 			return arr[middle];
 	}
 
 	public static void main(String[] args) {
-		int[] nums1 = new int[] { 1, 3 };
-		int[] nums2 = new int[] { 2 };
+		int[] nums1 = new int[] { };
+		int[] nums2 = new int[] { 2, 3 };
 		
 		System.out.println(findMedianSortedArrays(nums1, nums2));
 		System.out.println(findMedianSortedArrays2(nums1, nums2));
