@@ -2,7 +2,9 @@ package com.leetcode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -30,49 +32,43 @@ public class E437PathSum3 {
 		}
 	}	
 	
-	private static int sumPaths = 0;
+	private static int dfs (TreeNode node, int sum, Map<Integer, Integer> sums, int targetSum) {
+		if(node == null) return 0;
 		
-	private static void dfs (TreeNode node, List<Integer> sums, int targetSum) {
-		if(node == null) return;
-		if(node.val == targetSum) sumPaths++;
+		sum += node.val;
+		int count = sums.getOrDefault(sum - targetSum, 0);
 		
-		List<Integer> newSums = new ArrayList<>();
-		// recompute sums
-		for(int i = 0; i < sums.size(); i++) {
-			int sum = sums.get(i) + node.val;
-			if(sum == targetSum) sumPaths++;
-			newSums.add(sum);
-		}
-		
-		// add node value to sums
-		newSums.add(node.val);
+		sums.put(sum, sums.getOrDefault(sum, 0) + 1);
 		
 		// call dfs for childrens
-		dfs(node.left, newSums, targetSum);
-		dfs(node.right, newSums, targetSum);
+		count += dfs(node.left, sum, sums, targetSum);
+		count += dfs(node.right, sum, sums, targetSum);
+		
+		sums.put(sum, sums.getOrDefault(sum, 0) - 1);
+		return count;
 	}
 	
-	
 	/**
-	 * First solution: compute sums for each node from their ancestors and pass it to childrens
-	 * so on and so forth
+	 * Second solution, instead of spread list of sums of each ancestor,
+	 * we simply spread the sum, keep track of previous sums, and try to know if 
+	 * minus complement could be found in map
 	 * 
 	 * @param root
 	 * @param targetSum
 	 * @return
 	 */
     public static int pathSum(TreeNode root, int targetSum) {
-        List<Integer> sums = new ArrayList<>();
-        dfs(root, sums, targetSum);
-        return sumPaths;
+    	Map<Integer, Integer> map = new HashMap<>();
+    	map.put(0, 1);
+    	return dfs(root, 0, map, targetSum);
     }
-	       
-	
+	       	
+    // Tests
 	public static void main(String[] args) {
 		
 		// inputs
-		Integer[] arr = new Integer[] {10,5,-3,3,2,null,11,3,-2,null,1};
-		int target = 8;
+		Integer[] arr = new Integer[] {0, 1, 1};
+		int target = 1;
 		
 		List<Integer> values = new ArrayList<>(Arrays.asList(arr));
 		List<TreeNode> list = new ArrayList<>();
@@ -80,8 +76,7 @@ public class E437PathSum3 {
 		list.add(root);
 		populateTree(list, values);
 		
-		pathSum(root, target);
-		System.out.println(sumPaths);
+		System.out.println(pathSum(root, target)); 
 	}
 	
 	/**
