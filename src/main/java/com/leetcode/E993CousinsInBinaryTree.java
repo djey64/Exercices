@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.TreeNode;
+import com.TreeUtils;
+
 
 /**
  * Given the root of a binary tree with unique values and the values of two different nodes of the tree x and y, return true if the nodes corresponding to the values x and y in the tree are cousins, or false otherwise.
@@ -17,19 +20,6 @@ import java.util.List;
  */
 public class E993CousinsInBinaryTree {
 
-	public static class TreeNode {
-		int val;
-		TreeNode left;
-		TreeNode right;
-		TreeNode() {}
-		TreeNode(int val) { this.val = val; }
-		TreeNode(int val, TreeNode left, TreeNode right) {
-			this.val = val;
-			this.left = left;
-			this.right = right;
-		}
-	}
-	
 	private static int xDepth = 0;
 	private static int yDepth = 0;
 	private static int xParent = 0;
@@ -65,36 +55,7 @@ public class E993CousinsInBinaryTree {
 		Integer[] arr = new Integer[] { 1,2,3,null,4,null,5 };
 		int x = 5;
 		int y = 4;
-		
-		List<Integer> values = new ArrayList<>(Arrays.asList(arr));
-		List<TreeNode> list = new ArrayList<>();
-		TreeNode root = new TreeNode(values.remove(0));
-		list.add(root);
-		populateTree(list, values);
-		
+		TreeNode root = TreeUtils.fromArray(arr);
 		System.out.println(isCousins(root, x, y)); 		
-	}
-	
-	
-	/**
-	 * Populate the tree (bfs)
-	 * 
-	 * @param list
-	 * @param values
-	 */
-	public static void populateTree(List<TreeNode> list, List<Integer> values) {
-		while(!list.isEmpty() && !values.isEmpty()) {
-			TreeNode node = list.remove(0);
-			Integer value = values.remove(0);
-			if(value != null) {
-				node.left = new TreeNode(value);
-				list.add(node.left);
-			}
-			value = values.remove(0);
-			if(value != null) {
-				node.right = new TreeNode(value);
-				list.add(node.right);
-			}
-		}
 	}
 }
