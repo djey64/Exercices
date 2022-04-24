@@ -56,6 +56,6 @@ public class E993CousinsInBinaryTree {
 		int x = 5;
 		int y = 4;
 		TreeNode root = TreeUtils.fromArray(arr);
-		System.out.println(isCousins(root, x, y)); 		
+		System.out.println(isCousins(root, x, y));
 	}
 }

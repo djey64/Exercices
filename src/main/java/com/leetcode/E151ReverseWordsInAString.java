@@ -2,6 +2,8 @@ package com.leetcode;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -18,20 +20,33 @@ import java.util.stream.Collectors;
  */
 public class E151ReverseWordsInAString {
 
-    public static String reverseWords(String s) {
+    public static String reverseWords1(String s) {
         List<String> list = Arrays.stream(s.split(" ")).filter(word -> !word.isEmpty()).collect(Collectors.toList());
         
-        for(int i = 0, j = 0; i < j ; i++, j--) {
-        	
+        StringBuilder sb = new StringBuilder();
+        for(int i = list.size() - 1; i >= 0; i--) {
+        	sb.append(list.get(i)).append(" ");
         }
         
-        return String.join(" ", list);
+        return sb.deleteCharAt(sb.length() - 1).toString();
     }
+    
+    
+    public static String reverseWords(String s) {
+    	Matcher m = Pattern.compile("\\w+").matcher(s);
+        StringBuffer sb = new StringBuffer();
+        System.out.println(m.groupCount());
+        while(m.find()) {
+        	m.appendTail(sb);
+//        	sb.append(m.)).append(" ");
+		}
+        return sb.deleteCharAt(sb.length() - 1).toString();
+	}
 	
 	
 	public static void main(String[] args) {
 		
-		String s = "the sky is blue";
+		String s = "the       sky is blue";
 		System.out.println(reverseWords(s));
 	}
 }
